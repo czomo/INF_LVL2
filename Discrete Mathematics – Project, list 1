@@ -1,0 +1,34 @@
+public class HelloWorld{
+
+     public static void main(String []args){
+         double X=2.1;
+         double Y=2;
+        double a = floor(X);
+        double b = ceilling(X);
+        double c = fractional(X);
+        double d = mod(X,Y);
+        System.out.println(a + " " + b + " "+ c + " " + d);
+        }
+        //ceiling
+        public static double ceilling(double number){double x;
+            if(number%1 == 0)  x=number;
+            else if(number>0) { x=(number-(number%1)+1);
+            }else {x=(number-(number%1));}
+             return x;
+        }
+               // floor
+       public static double floor(double number){double x;
+        if(number%1 == 0)  x = number;
+         else if(number>0) { x=(number-(number%1));
+         }else { x=(number-(number%1)-1);}
+         return x;
+       }
+       public static double fractional(double number){double x;
+        x=number-(floor(number));
+        return x;
+       }
+       public static double mod(double number1, double number2){double x;
+           x=(number1-(number2*floor(number1/number2)))%1;
+           return x;
+       }
+}
