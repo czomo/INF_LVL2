@@ -1,4 +1,4 @@
-public class HelloWorld{
+public class Pdf{
 
      public static void main(String []args){
          double X=2.1;
@@ -7,8 +7,29 @@ public class HelloWorld{
         double b = ceilling(X);
         double c = fractional(X);
         double d = mod(X,Y);
-        System.out.println(a + " " + b + " "+ c + " " + d);
-        }
+        int e=getPrime(14);
+        System.out.println(a + " " + b + " "+ c + " " + d+" "+e);
+    }
+          public static int getPrime(int number)
+          {   int i=2;
+              while(true){
+                  if(isPrime(i)){System.out.println(i);
+                      number--;
+                  }
+                  i++;
+                  if(number==0)break;
+              }
+         return 0;
+          }
+        //prime
+        public static boolean isPrime(int number) {
+          for (int i = 2; i <= number / 2; i++) {
+              if (number % i == 0) {
+                return false;
+              }
+            }
+            return true;
+          }
         //ceiling
         public static double ceilling(double number){double x;
             if(number%1 == 0)  x=number;
@@ -16,19 +37,21 @@ public class HelloWorld{
             }else {x=(number-(number%1));}
              return x;
         }
-               // floor
+       // floor
        public static double floor(double number){double x;
         if(number%1 == 0)  x = number;
          else if(number>0) { x=(number-(number%1));
          }else { x=(number-(number%1)-1);}
          return x;
        }
+       //fractional
        public static double fractional(double number){double x;
         x=number-(floor(number));
         return x;
        }
+       //mod
        public static double mod(double number1, double number2){double x;
-           x=(number1-(number2*floor(number1/number2)))%1;
+           x=number1-(number2*floor(number1/number2));
            return x;
        }
 }
