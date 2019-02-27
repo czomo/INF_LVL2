@@ -1,19 +1,42 @@
-public class Pdf{
+import java.util.Arrays; 
+import java.util.List; 
+import java.util.ArrayList; 
+
+
+
+public class HelloWorld{
 
      public static void main(String []args){
-         double X=2.1;
-         double Y=2;
+        double X=4;
+        double Y=2;
         double a = floor(X);
         double b = ceilling(X);
         double c = fractional(X);
         double d = mod(X,Y);
-        int e=getPrime(14);
-        System.out.println(a + " " + b + " "+ c + " " + d+" "+e);
+        int e=getPrime(2);
+        System.out.println("a: "+a + "b: " + b + "c: "+ c + "d: " + d+"e: "+e);
+        
+        char[] perm = new char[5];
+        permutation(perm, 0, "1");
+        
+        String input = "123455"; 
+        if (uniqueCharacters(input)) System.out.println("Given sequence " + input + " has all unique numbers"); 
+        elseSystem.out.println("The String " + input + " has duplicate numbers"); 
     }
-          public static int getPrime(int number)
+        private static void permutation(char[] perm, int pos, String str) {
+            if (pos == perm.length) {
+                System.out.println(new String(perm));
+            } else {
+                for (int i = 0 ; i < str.length() ; i++) {
+                    perm[pos] = str.charAt(i);
+                    permutation(perm, pos+1, str);
+                }
+            }
+        }
+        public static int getPrime(int number)
           {   int i=2;
               while(true){
-                  if(isPrime(i)){System.out.println(i);
+                  if(sieveOfEratosthenes(i)){System.out.println(i);
                       number--;
                   }
                   i++;
@@ -31,21 +54,24 @@ public class Pdf{
             return true;
           }
         //ceiling
-        public static double ceilling(double number){double x;
+        public static double ceilling(double number){
+            double x;
             if(number%1 == 0)  x=number;
             else if(number>0) { x=(number-(number%1)+1);
             }else {x=(number-(number%1));}
              return x;
         }
        // floor
-       public static double floor(double number){double x;
+       public static double floor(double number){
+        double x;
         if(number%1 == 0)  x = number;
          else if(number>0) { x=(number-(number%1));
          }else { x=(number-(number%1)-1);}
          return x;
        }
        //fractional
-       public static double fractional(double number){double x;
+       public static double fractional(double number){
+        double x;
         x=number-(floor(number));
         return x;
        }
@@ -54,4 +80,37 @@ public class Pdf{
            x=number1-(number2*floor(number1/number2));
            return x;
        }
+       ////
+           public static final boolean sieveOfEratosthenes(int number) {
+        boolean[] sieve = null;
+        if (number == 1) {
+            return false;
+        }
+        if (sieve == null || number >= sieve.length) {
+            int start = 2;
+
+            if (sieve == null) {
+                sieve = new boolean[number + 1];
+            } else if (number >= sieve.length) {
+                sieve = Arrays.copyOf(sieve, number + 1);
+            }
+
+            for (int i = start; i <= Math.sqrt(number); i++) {
+                if (!sieve[i]) {
+                    for (int j = i * 2; j <= number; j += i) {
+                        sieve[j] = true;
+                    }
+                }
+            }
+        }
+        return !sieve[number];
+    }
+    //permutation
+    public static boolean uniqueCharacters(String str) { 
+                for (int i = 0; i < str.length(); i++) 
+                    for (int j = i + 1; j < str.length(); j++) 
+                        if (str.charAt(i) == str.charAt(j)) 
+                            return false; 
+                return true; 
+            } 
 }
