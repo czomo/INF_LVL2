@@ -11,42 +11,27 @@ public class HelloWorld {
 		double c = fractional(X);
 		double d = mod(X, Y);
 		/// generating n prime numbers
-		int e = getPrime(2);
+		int e = getPrime(5);
 		System.out.println("a: " + a + "b: " + b + "c: " + c + "d: " + d + "e: " + e);
 
-		// generating permutation
-//		int n = 3;
-//		char[] perm = new char[n];
-//		permutation(perm, 0, "cab");
-		
-		
 		/// checking permutation
 	    String input = "1234"; 
 		if (ispermutation(input))
 			System.out.println("Given sequence " + input + " has all unique numbers");
 		else
 			System.out.println("The String " + input + " has duplicate numbers");
+		// generating permutation
+
 		// second method
 	        int n = input.length(); 
 	        HelloWorld permutation = new HelloWorld(); 
 	        permutation.permute(input, 0, n-1); 
 	}
 
-//	private static void permutation(char[] perm, int pos, String str) {
-//		if (pos == perm.length) {
-//			System.out.println(new String(perm));
-//		} else {
-//			for (int i = 0; i < str.length(); i++) {
-//				perm[pos] = str.charAt(i);
-//				permutation(perm, pos + 1, str);
-//			}
-//		}
-//	}
-
 	public static int getPrime(int number) {
 		int i = 2;
 		while (true) {
-			if (sieveOfEratosthenes(i)) {
+			if (sieveEratosthenes(i)) {
 				System.out.println(i);
 				number--;
 			}
@@ -108,29 +93,29 @@ public class HelloWorld {
 	}
 
 	//// sieveoferatosthenes
-	public static final boolean sieveOfEratosthenes(int number) {
-		boolean[] sieve = null;
+	public static boolean sieveEratosthenes(int number) {
+		boolean[] obj = null;
 		if (number == 1) {
 			return false;
 		}
-		if (sieve == null || number >= sieve.length) {
+		if (obj == null || number >= obj.length) {
 			int start = 2;
 
-			if (sieve == null) {
-				sieve = new boolean[number + 1];
-			} else if (number >= sieve.length) {
-				sieve = Arrays.copyOf(sieve, number + 1);
+			if (obj == null) {
+				obj = new boolean[number + 1];
+			} else if (number >= obj.length) {
+				obj = Arrays.copyOf(obj, number + 1);
 			}
 
 			for (int i = start; i <= Math.sqrt(number); i++) {
-				if (!sieve[i]) {
+				if (!obj[i]) {
 					for (int j = i * 2; j <= number; j += i) {
-						sieve[j] = true;
+						obj[j] = true;
 					}
 				}
 			}
 		}
-		return !sieve[number];
+		return !obj[number];
 	}
 
 	// ispermutation
@@ -155,13 +140,13 @@ public class HelloWorld {
 	            } 
 	        } 
 	    } 
-	    public String swap(String a, int i, int j) 
+	    public String swap(String str, int i, int j) 
 	    { 
 	        char temp; 
-	        char[] charArray = a.toCharArray(); 
-	        temp = charArray[i] ; 
-	        charArray[i] = charArray[j]; 
-	        charArray[j] = temp; 
-	        return String.valueOf(charArray); 
+	        char[] Array = str.toCharArray(); 
+	        temp = Array[i] ; 
+	        Array[i] = Array[j]; 
+	        Array[j] = temp; 
+	        return String.valueOf(Array); 
 	    } 
 }
