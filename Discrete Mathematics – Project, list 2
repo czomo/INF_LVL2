@@ -1,0 +1,100 @@
+from itertools import count, islice
+from random import choice, randint
+import time
+INF = float('Inf')
+graph = {}
+
+def graph_generator():
+    pow_gen = (10**i for i in islice(count(1), 3))
+    for node_count in pow_gen:
+        nodes = [x for x in range(node_count)]
+        graph = {}
+        for node in nodes:
+            graph[node] = {choice(nodes): randint(1, 10) for _ in range(int(len(nodes) * 0.4))}
+        yield graph
+
+#----------------Djikstra algo-------------------
+def dijkstra(graph):
+    start = 1
+    stop = 12
+    t1_start = time.perf_counter()
+    short_dist = {}
+    precursor = {}
+    unseenNodes = graph
+    infinity = INF
+    path = []
+    for node in unseenNodes:
+        short_dist[node] = infinity
+    short_dist[start] = 0
+
+    while unseenNodes:
+        minNode = None
+        for node in unseenNodes:
+            if minNode is None:
+                minNode = node
+            elif short_dist[node] < short_dist[minNode]:
+                minNode = node
+
+        for childNode, weight in graph[minNode].items():
+            if weight + short_dist[minNode] < short_dist[childNode]:
+                short_dist[childNode] = weight + short_dist[minNode]
+                precursor[childNode] = minNode
+        unseenNodes.pop(minNode)
+
+    currentNode = stop
+    while currentNode != start:
+        try:
+            path.insert(0,currentNode)
+            currentNode = precursor[currentNode]
+        except KeyError:
+            print('Path not reachable')
+            break
+    path.insert(0,start)
+    if short_dist[stop] != infinity:
+        print('Shortest distance is ' + str(short_dist[stop]))
+        print('And the path is ' + str(path))
+    
+    t1_stop = time.perf_counter()
+    t1_results = t1_stop - t1_start
+    print("----------------------------------------------------------------")
+    print(f"Time of execution of dijkstra: {len(graph)} - {t1_results *1000} milis ")
+    print("----------------------------------------------------------------")
+
+
+#----------------Belman algo-------------------
+
+def Belman(graph, source):
+    source = 0
+    t2_start = time.perf_counter()
+    distance, predecessor = dict(), dict()
+    for node in graph:
+        distance[node], predecessor[node] = INF, None
+    distance[source] = 0
+
+    for _ in range(len(graph) - 1):
+        for node in graph:
+            for neighbour in graph[node]:
+                if distance[neighbour] > distance[node] + graph[node][neighbour]:
+                    distance[neighbour], predecessor[neighbour] = distance[node] + graph[node][neighbour], node
+
+    for node in graph:
+        for neighbour in graph[node]:
+            assert distance[neighbour] <= distance[node] + graph[node][neighbour], "Negative weight cycle."
+
+    t2_stop = time.perf_counter()
+    t2_results = t2_stop - t2_start
+    print("----------------------------------------------------------------")
+    print(f"Time of execution of belman: {len(graph)} - {t2_results *1000} milis ")
+    print("----------------------------------------------------------------")
+    return(distance, predecessor)
+
+if __name__ == '__main__':
+    l =list(graph_generator())
+    for graph in l:
+            continue
+            nodes = tuple(sorted(tuple(graph)))
+    # Set start and stop
+    start = 1
+    stop = 11
+    distance, predecessor = Belman(graph, source = 1)
+    dijkstra(graph)
