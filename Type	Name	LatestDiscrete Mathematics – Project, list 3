@@ -1,0 +1,92 @@
+from itertools import count, islice
+from random import choice, randint, random
+import time
+INF = float('Inf')
+graph = {}
+pow_gen = (10**i for i in islice(count(1), 2))
+
+def matrix_generator_(pow_gen):
+    for node_count in pow_gen:
+        nodes = [x for x in range(node_count)]
+        graph = {}
+        for node in nodes:
+            graph[node] = {choice(nodes): randint(1, 10) for _ in range(int(len(nodes) * 0.8))}
+    return graph
+
+graph= matrix_generator_(pow_gen)
+keys=sorted(graph.keys())
+size=len(keys) 
+
+
+def matrix_generator(keys, size):
+    M = [ [0]*size for i in range(size) ]
+    x= randint(1,9)
+    for a,b in [(keys.index(a), keys.index(b)) for a, row in graph.items() for b in row]:
+         M[a][b] = 2 if (a==b) else x
+    return M
+
+N = size 
+parentTracker = []
+
+def Search_through(residualGraph, source, sink, parentTracker):
+    queue= []
+    visited = []
+
+    for x in range(0, N):
+        visited.append(0)
+    
+    queue.append(source)
+    visited[source] = True
+    parentTracker[source]= -1
+
+    while not len(queue) == 0:
+        u = queue.pop(0)
+        for v in range(0, N):
+            if visited[v] == False and residualGraph[u][v] > 0:
+                queue.append(v)
+                visited[v] = True
+                parentTracker[v] = u
+    
+    if visited[sink]:
+        return True
+    else:
+        return False
+def FordFulkersonAlgo(graph, source, sink):
+    t1_start = time.perf_counter()
+    u, v = 0, 0
+    residualGraph = graph
+    maxFlow = 0
+    while Search_through(residualGraph, source, sink, parentTracker):
+        pathFlow = INF
+        v = sink
+        while not v == source:
+            u = parentTracker[v]
+            pathFlow = min(pathFlow, residualGraph[u][v])
+            v = parentTracker[v]
+        v = sink
+
+        while not v == source:
+            u = parentTracker[v]
+            residualGraph[u][v] -= pathFlow
+            residualGraph[v][u] += pathFlow
+            v = parentTracker[v]
+        maxFlow += pathFlow
+    
+    t1_stop = time.perf_counter()
+    t1_results = t1_stop - t1_start
+    print("----------------------------------------------------------------")
+    print(f"Time of execution of ford fulkerson: {len(graph)} - {t1_results *1000} milis ")
+    print("----------------------------------------------------------------")
+
+    return maxFlow
+
+def main():
+    graph = matrix_generator(keys, size)
+    for x in range(0, N):
+        parentTracker.append(0)
+
+    print("The maximum possible flow is {}".format(FordFulkersonAlgo(graph, 0, N-1)))
+    print("----------------------------------------------------------------")
+
+if __name__ == "__main__":
+    main()
